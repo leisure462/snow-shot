@@ -8,11 +8,12 @@ pub mod ocr;
 pub mod plugin;
 pub mod screenshot;
 pub mod scroll_screenshot;
-pub mod video_record;
+// pub mod video_record; // 已移除视频录制功能
 pub mod webview;
 
 use snow_shot_app_services::listen_mouse_service;
-use snow_shot_tauri_commands_core::{FullScreenDrawWindowLabels, VideoRecordWindowLabels};
+use snow_shot_tauri_commands_core::FullScreenDrawWindowLabels;
+// use snow_shot_tauri_commands_core::VideoRecordWindowLabels; // 已移除视频录制功能
 use std::sync::Arc;
 use tauri::Emitter;
 use tokio::sync::Mutex;
@@ -29,7 +30,7 @@ use snow_shot_app_services::hot_load_page_service;
 use snow_shot_app_services::listen_key_service;
 use snow_shot_app_services::ocr_service::OcrService;
 use snow_shot_app_services::resize_window_service;
-use snow_shot_app_services::video_record_service;
+// use snow_shot_app_services::video_record_service; // 已移除视频录制功能
 use snow_shot_app_shared::EnigoManager;
 use snow_shot_global_state::{CaptureState, ReadClipboardState, WebViewSharedBufferState};
 use snow_shot_plugin_service::plugin_service;
@@ -41,7 +42,7 @@ pub static PROFILER: std::sync::LazyLock<Mutex<Option<dhat::Profiler>>> =
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let ocr_instance = Mutex::new(OcrService::new());
-    let video_record_service = Mutex::new(video_record_service::VideoRecordService::new());
+    // let video_record_service = Mutex::new(video_record_service::VideoRecordService::new()); // 已移除视频录制功能
     let hot_load_page_service = Arc::new(hot_load_page_service::HotLoadPageService::new());
     let enigo_instance = Mutex::new(EnigoManager::new());
 
@@ -73,7 +74,7 @@ pub fn run() {
     let capture_state = Mutex::new(CaptureState { capturing: false });
 
     let full_screen_draw_window_labels = Mutex::new(Option::<FullScreenDrawWindowLabels>::None);
-    let video_record_window_label = Mutex::new(Option::<VideoRecordWindowLabels>::None);
+    // let video_record_window_label = Mutex::new(Option::<VideoRecordWindowLabels>::None); // 已移除视频录制功能
 
     let webview_shared_buffer_state = WebViewSharedBufferState::new(false);
 
@@ -214,7 +215,7 @@ pub fn run() {
         .manage(scroll_screenshot_service)
         .manage(scroll_screenshot_image_service)
         .manage(scroll_screenshot_capture_service)
-        .manage(video_record_service)
+        // .manage(video_record_service) // 已移除视频录制功能
         .manage(free_drag_window_service)
         .manage(resize_window_service)
         .manage(listen_key_service)
@@ -225,7 +226,7 @@ pub fn run() {
         .manage(full_screen_draw_window_labels)
         .manage(webview_shared_buffer_state)
         .manage(hot_load_page_service)
-        .manage(video_record_window_label)
+        // .manage(video_record_window_label) // 已移除视频录制功能
         .manage(capture_state)
         .manage(read_clipboard_state)
         .invoke_handler(tauri::generate_handler![
@@ -271,9 +272,9 @@ pub fn run() {
             core::get_current_monitor_info,
             core::get_monitors_bounding_box,
             core::send_new_version_notification,
-            core::create_video_record_window,
-            core::close_video_record_window,
-            core::has_video_record_window,
+            // core::create_video_record_window, // 已移除视频录制功能
+            // core::close_video_record_window, // 已移除视频录制功能
+            // core::has_video_record_window, // 已移除视频录制功能
             core::has_focused_full_screen_window,
             core::set_current_window_always_on_top,
             core::auto_start_enable,
@@ -296,13 +297,13 @@ pub fn run() {
             scroll_screenshot::scroll_screenshot_save_to_clipboard,
             scroll_screenshot::scroll_screenshot_get_size,
             scroll_screenshot::scroll_screenshot_clear,
-            video_record::video_record_start,
-            video_record::video_record_stop,
-            video_record::video_record_pause,
-            video_record::video_record_resume,
-            video_record::video_record_kill,
-            video_record::video_record_get_microphone_device_names,
-            video_record::video_record_init,
+            // video_record::video_record_start, // 已移除视频录制功能
+            // video_record::video_record_stop, // 已移除视频录制功能
+            // video_record::video_record_pause, // 已移除视频录制功能
+            // video_record::video_record_resume, // 已移除视频录制功能
+            // video_record::video_record_kill, // 已移除视频录制功能
+            // video_record::video_record_get_microphone_device_names, // 已移除视频录制功能
+            // video_record::video_record_init, // 已移除视频录制功能
             listen_key::listen_key_start,
             listen_key::listen_key_stop,
             listen_key::listen_key_stop_by_window_label,

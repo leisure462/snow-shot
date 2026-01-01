@@ -1,7 +1,8 @@
 use snow_shot_app_shared::{ElementRect, EnigoManager};
 use snow_shot_global_state::WebViewSharedBufferState;
 use snow_shot_tauri_commands_core::{
-    FullScreenDrawWindowLabels, MonitorsBoundingBox, VideoRecordWindowLabels,
+    FullScreenDrawWindowLabels, MonitorsBoundingBox,
+    // VideoRecordWindowLabels, // 已移除视频录制功能
 };
 use std::{path::PathBuf, sync::Arc};
 use tauri::{Manager, PhysicalPosition, PhysicalSize, command, ipc::Response};
@@ -185,6 +186,7 @@ pub async fn send_new_version_notification(title: String, body: String) {
     snow_shot_tauri_commands_core::send_new_version_notification(title, body).await;
 }
 
+/* 已移除视频录制功能
 /// 创建屏幕录制窗口
 #[command]
 pub async fn create_video_record_window(
@@ -226,6 +228,7 @@ pub async fn has_video_record_window(
 ) -> Result<bool, String> {
     snow_shot_tauri_commands_core::has_video_record_window(video_record_window_labels).await
 }
+*/
 
 #[command]
 pub async fn start_free_drag(
