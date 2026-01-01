@@ -1,0 +1,87 @@
+# 简单测试编译工作流
+name: Test Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      - name: Install yarn
+        run: npm install -g yarn
+
+      - name: Clone Excalidraw
+        run: |
+          cd ..
+          git clone https://github.com/mg-chao/excalidraw.git
+          cd excalidraw
+          git checkout custom/master
+        shell: bash
+
+      - name: Install Excalidraw dependencies
+        run: |
+          cd ../excalidraw
+          yarn install --frozen-lockfile
+          cd ../snow-shot
+        shell: bash
+
+      - name: Create .env file
+        run: echo "PUBLIC_ONLINE_STATUS=true" > .env
+        shell: bash
+
+      - name: Install app dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Excalidraw
+        run: pnpm update:excalidraw
+
+      - name: Download onnxruntime
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/supertone-inc/onnxruntime-build/releases/download/v1.22.2/onnxruntime-win-x64-static_lib-1.22.2.zip" -OutFile "onnxruntime.zip"
+          Expand-Archive -Path "onnxruntime.zip" -DestinationPath "onnxruntime-temp" -Force
+          $libPath = Get-ChildItem -Path "onnxruntime-temp" -Recurse -Directory -Filter "lib" | Select-Object -First 1
+          if ($libPath) {
+            Copy-Item -Path $libPath.FullName -Destination "src-tauri\lib" -Recurse -Force
+          }
+          Remove-Item -Path "onnxruntime.zip" -Force
+          Remove-Item -Path "onnxruntime-temp" -Recurse -Force
+        shell: pwsh
+
+      - name: Build Tauri app
+        run: pnpm tauri build
+        env:
+          CI: false
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: |
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/nsis/*.exe
