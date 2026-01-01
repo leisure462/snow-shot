@@ -1,0 +1,13 @@
+[package]
+name = "tauri-plugin-eco-window"
+version = "0.1.0"
+authors = []
+description = "EcoPaste window management plugin"
+edition = "2021"
+
+[dependencies]
+tauri = { workspace = true }
+serde = { workspace = true }
+
+[build-dependencies]
+tauri-plugin = { version = "2", features = ["build"] }

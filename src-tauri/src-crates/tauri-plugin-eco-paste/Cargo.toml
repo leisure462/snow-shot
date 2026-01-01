@@ -1,0 +1,19 @@
+[package]
+name = "tauri-plugin-eco-paste"
+version = "0.1.0"
+authors = []
+description = "EcoPaste paste plugin"
+edition = "2021"
+
+[dependencies]
+tauri = { workspace = true }
+serde = { workspace = true }
+tauri-plugin-eco-window = { path = "../tauri-plugin-eco-window" }
+
+[build-dependencies]
+tauri-plugin = { version = "2", features = ["build"] }
+
+[target."cfg(target_os = \"windows\")".dependencies]
+log = { workspace = true }
+winapi = { version = ">=0.3, <1", features = ["winuser", "windef"] }
+enigo = { workspace = true }
