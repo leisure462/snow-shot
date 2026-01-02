@@ -480,6 +480,30 @@ const MenuLayoutCore: React.FC<{ children: React.ReactNode }> = ({
 							return true;
 						}),
 					},
+					{
+						key: "/settings/ocrSettings",
+						path: "/settings/ocrSettings",
+						label: "OCR API 设置",
+						hideTabs: true,
+						tabs: [
+							{
+								key: "ocrSettings",
+								label: "OCR API 设置",
+							},
+						],
+					},
+					{
+						key: "/settings/translateSettings",
+						path: "/settings/translateSettings",
+						label: "翻译 API 设置",
+						hideTabs: true,
+						tabs: [
+							{
+								key: "translateSettings",
+								label: "翻译 API 设置",
+							},
+						],
+					},
 				],
 			},
 			{
