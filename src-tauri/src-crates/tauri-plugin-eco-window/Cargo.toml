@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = []
 description = "EcoPaste window management plugin"
 edition = "2021"
+links = "tauri-plugin-eco-window"
 
 [dependencies]
 tauri = { workspace = true }

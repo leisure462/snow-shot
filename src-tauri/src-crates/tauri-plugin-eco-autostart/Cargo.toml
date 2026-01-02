@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = []
 description = "EcoPaste autostart plugin"
 edition = "2021"
+links = "tauri-plugin-eco-autostart"
 
 [dependencies]
 tauri = { workspace = true }

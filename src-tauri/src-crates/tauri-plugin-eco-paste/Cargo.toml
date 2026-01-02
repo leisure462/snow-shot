@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = []
 description = "EcoPaste paste plugin"
 edition = "2021"
+links = "tauri-plugin-eco-paste"
 
 [dependencies]
 tauri = { workspace = true }
